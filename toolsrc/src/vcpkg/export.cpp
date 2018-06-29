@@ -3,10 +3,12 @@
 #include <vcpkg/base/stringliteral.h>
 #include <vcpkg/base/system.h>
 #include <vcpkg/base/util.h>
+
 #include <vcpkg/commands.h>
 #include <vcpkg/dependencies.h>
 #include <vcpkg/export.h>
 #include <vcpkg/export.ifw.h>
+#include <vcpkg/globalstate.h>
 #include <vcpkg/help.h>
 #include <vcpkg/input.h>
 #include <vcpkg/install.h>
@@ -68,11 +70,15 @@ namespace vcpkg::Export
     {
         static constexpr std::array<ExportPlanType, 2> ORDER = {ExportPlanType::ALREADY_BUILT,
                                                                 ExportPlanType::NOT_BUILT};
-        static constexpr Build::BuildPackageOptions BUILD_OPTIONS = {Build::UseHeadVersion::NO,
-                                                                     Build::AllowDownloads::YES,
-                                                                     Build::CleanBuildtrees::NO,
-                                                                     Build::CleanPackages::NO,
-                                                                     Build::DownloadTool::BUILT_IN};
+        static constexpr Build::BuildPackageOptions BUILD_OPTIONS = {
+            Build::UseHeadVersion::NO,
+            Build::AllowDownloads::YES,
+            Build::CleanBuildtrees::NO,
+            Build::CleanPackages::NO,
+            Build::DownloadTool::BUILT_IN,
+            Build::BinaryCaching::NO,
+            Build::FailOnTombstone::NO,
+        };
 
         for (const ExportPlanType plan_type : ORDER)
         {
